@@ -18,9 +18,11 @@ package com.android.systemui.statusbar;
 
 import android.os.IBinder;
 import android.service.notification.StatusBarNotification;
+import android.graphics.Bitmap; 
 import android.view.View;
 import android.widget.ImageView;
 
+import com.android.systemui.statusbar.BaseStatusBar.NotificationClicker; 
 import com.android.systemui.R;
 
 import java.util.ArrayList;
@@ -38,7 +40,10 @@ public class NotificationData {
         public View content; // takes the click events and sends the PendingIntent
         public View expanded; // the inflated RemoteViews
         public ImageView largeIcon;
+	protected boolean hide = false;
+        protected Bitmap roundIcon;
         private View expandedBig;
+	protected NotificationClicker floatingIntent; 
         private boolean interruption;
         public Entry() {}
         public Entry(IBinder key, StatusBarNotification n, StatusBarIconView ic) {
@@ -46,6 +51,12 @@ public class NotificationData {
             this.notification = n;
             this.icon = ic;
         }
+	 public Entry(IBinder key, StatusBarNotification n, StatusBarIconView ic, Bitmap ri) {
+            this.key = key;
+            this.notification = n;
+            this.icon = ic;
+            this.roundIcon = ri;
+        } 
         public void setBigContentView(View bigContentView) {
             this.expandedBig = bigContentView;
             row.setExpandable(bigContentView != null);
@@ -130,6 +141,14 @@ public class NotificationData {
         }
         return e;
     }
+
+    public NotificationClicker getFloatingIntent() {
+        return floatingIntent;
+    }
+
+    public Bitmap getRoundIcon() {
+        return roundIcon;
+    } 
 
     /**
      * Return whether there are any visible items (i.e. items without an error).

@@ -1538,6 +1538,24 @@ public final class Settings {
         @Deprecated
         public static final String STAY_ON_WHILE_PLUGGED_IN = Global.STAY_ON_WHILE_PLUGGED_IN;
 
+	/**
+         * HALO, should default to 0 (no, do not show)
+         * @hide
+         */
+        public static final String HALO_ACTIVE = "halo_active";
+
+        /**
+         * HALO reversed?, should default to 1 (yes, reverse)
+         * @hide
+         */
+        public static final String HALO_REVERSED = "halo_reversed";
+
+        /**
+         * HALO hide?, should default to 0 (no, do not hide)
+         * @hide
+         */
+        public static final String HALO_HIDE = "halo_hide"; 
+
         /**
          * What happens when the user presses the end call button if they're not
          * on a call.<br/>

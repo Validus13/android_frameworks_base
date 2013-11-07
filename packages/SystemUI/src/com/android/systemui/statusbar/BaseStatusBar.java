@@ -173,6 +173,17 @@ public abstract class BaseStatusBar extends SystemUI implements
         }
     };
 
+        // Expanded notification behavior
+        // 0: normal; 1: never expand; 2: always expand; 3: revert to old
+        int notificationsBehaviour = 0;
+        private ContentObserver SettingsObserver = new ContentObserver(new Handler()) {
+        @Override
+        public void onChange(boolean selfChange) {
+            notificationsBehaviour = Settings.System.getInt(
+                    mContext.getContentResolver(), Settings.System.NOTIFICATIONS_BEHAVIOUR, 0);
+        }
+    }; 	
+
     private RemoteViews.OnClickHandler mOnClickHandler = new RemoteViews.OnClickHandler() {
         @Override
         public boolean onClickHandler(View view, PendingIntent pendingIntent, Intent fillInIntent) {
@@ -228,9 +239,14 @@ public abstract class BaseStatusBar extends SystemUI implements
         mPowerManager = (PowerManager) mContext.getSystemService(Context.POWER_SERVICE);
 
         mProvisioningObserver.onChange(false); // set up
+	SettingsObserver.onChange(false); 
         mContext.getContentResolver().registerContentObserver(
                 Settings.Global.getUriFor(Settings.Global.DEVICE_PROVISIONED), true,
                 mProvisioningObserver);
+
+	mContext.getContentResolver().registerContentObserver(
+                Settings.System.getUriFor(Settings.System.NOTIFICATIONS_BEHAVIOUR), true,
+                SettingsObserver); 
 
         mBarService = IStatusBarService.Stub.asInterface(
                 ServiceManager.getService(Context.STATUS_BAR_SERVICE));
@@ -684,7 +700,7 @@ public abstract class BaseStatusBar extends SystemUI implements
             params.maxHeight = minHeight;
             adaptive.addView(contentViewLocal, params);
         }
-        if (bigContentViewLocal != null) {
+        if (bigContentViewLocal != null && notificationsBehaviour != 3) {
             SizeAdaptiveLayout.LayoutParams params =
                     new SizeAdaptiveLayout.LayoutParams(bigContentViewLocal.getLayoutParams());
             params.minHeight = minHeight+1;
@@ -706,7 +722,9 @@ public abstract class BaseStatusBar extends SystemUI implements
         entry.row.setRowHeight(mRowHeight);
         entry.content = content;
         entry.expanded = contentViewLocal;
-        entry.setBigContentView(bigContentViewLocal);
+	if (notificationsBehaviour != 3) {
+            entry.setBigContentView(bigContentViewLocal);
+	}
 
         return true;
     }

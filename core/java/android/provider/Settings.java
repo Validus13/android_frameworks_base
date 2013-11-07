@@ -2889,6 +2889,12 @@ public final class Settings {
          */
         public static final String NOTIF_ALPHA = "notif_alpha";   
 
+	/**
+         * Notifications Expand Behavior
+         * @hide
+         */
+        public static final String NOTIFICATIONS_BEHAVIOUR = "notifications_behaviour";
+
         /**
          * Display style of AM/PM next to clock in status bar
          * 0: Normal display (Eclair stock)

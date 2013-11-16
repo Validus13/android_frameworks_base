@@ -3412,9 +3412,15 @@ public final class Settings {
          * 1 = force on
          * @hide
          */
-       public static final String UI_FORCE_OVERFLOW_BUTTON = "ui_force_overflow_button";
+        public static final String UI_FORCE_OVERFLOW_BUTTON = "ui_force_overflow_button";
 
 	/**  
+         * Whether or not to show circle battery around the lockscreen ring
+         * @hide
+         */
+        public static final String BATTERY_AROUND_LOCKSCREEN_RING = "battery_around_lockscreen_ring";
+
+        /**
          * Custom System Animations
    	 *  
          * @hide
